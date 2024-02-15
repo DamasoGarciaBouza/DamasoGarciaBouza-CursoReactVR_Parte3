@@ -4,6 +4,7 @@ export const PruebasComponent = () => {
 
     const [usuario, SetUsuario] = useState("Fulanito");
     const [fecha, setFecha] = useState("01-01-1999");
+    const [contador, setContador] = useState(0);
 
     const modUsuario = e => {
         SetUsuario(e.target.value);
@@ -27,10 +28,11 @@ export const PruebasComponent = () => {
     }, []) */
 
 
-    //solo se ejecuta al cambiar 
+    //solo se ejecuta al cambiar usuario o fecha
     useEffect(() => {
-        console.log("USE EFFECT - Usuario cambiado");
-    }, [usuario])
+        setContador(contador+1);
+        console.log(`USE EFFECT - Usuario o fecha cambiados ${contador} veces`);        
+    }, [usuario, fecha])
 
 
 
@@ -38,17 +40,16 @@ export const PruebasComponent = () => {
         <div>
             <h1>El efecto - Hook useEffect</h1>
 
-            <strong>{usuario}</strong>
-            <br></br>
+            <strong className={contador > 10 ? 'label label-green' : 'label'}>{usuario}</strong>
 
             <input type='text'
                 onChange={modUsuario}
                 placeholder='Cambia el nombre' />
 
-            <br></br>
-            <strong>{fecha}</strong>
+            <br></br><br></br>
+            <strong className={contador > 10 ? 'label label-green' : 'label'}>{fecha}</strong>
 
-            <br></br>
+            
             <button onClick={cambiarFecha}>Cambiar fecha</button>
         </div>
     )
