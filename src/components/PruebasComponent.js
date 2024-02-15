@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { AvisoComponent } from './AvisoComponent';
 
 export const PruebasComponent = () => {
 
@@ -22,16 +23,16 @@ export const PruebasComponent = () => {
         }) 
     */
 
-/*     //al pasar el array vacío solo se ejecuta una vez, al cargar
-    useEffect(() => {
-        console.log("USE EFFECT");
-    }, []) */
+    /*     //al pasar el array vacío solo se ejecuta una vez, al cargar
+        useEffect(() => {
+            console.log("USE EFFECT");
+        }, []) */
 
 
     //solo se ejecuta al cambiar usuario o fecha
     useEffect(() => {
-        setContador(contador+1);
-        console.log(`USE EFFECT - Usuario o fecha cambiados ${contador} veces`);        
+        setContador(contador + 1);
+        console.log(`USE EFFECT - Usuario o fecha cambiados ${contador} veces`);
     }, [usuario, fecha])
 
 
@@ -47,10 +48,13 @@ export const PruebasComponent = () => {
                 placeholder='Cambia el nombre' />
 
             <br></br><br></br>
+
             <strong className={contador > 10 ? 'label label-green' : 'label'}>{fecha}</strong>
 
-            
             <button onClick={cambiarFecha}>Cambiar fecha</button>
+
+            {usuario == "Mengano" && <AvisoComponent />}
+
         </div>
     )
 }

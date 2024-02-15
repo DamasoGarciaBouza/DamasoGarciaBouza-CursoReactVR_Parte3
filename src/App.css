@@ -44,6 +44,8 @@
   border-radius: 5px;
   background-color: lightblue;
   color: #282c34;
+  min-height: 2em;
+  line-height: 2em;
 }
 
 .label-green {
