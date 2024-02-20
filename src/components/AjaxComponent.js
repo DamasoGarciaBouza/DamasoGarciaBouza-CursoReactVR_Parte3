@@ -6,6 +6,8 @@ export const AjaxComponent = () => {
 
   const [cargando, setCargando] = useState(true);
 
+  const [errores, setErrores] = useState("");
+
   //GENERICO
   /*   const getUsuariosEstaticos = () => {
       setUsuarios([
@@ -34,11 +36,18 @@ export const AjaxComponent = () => {
   const getUsuariosAjaxAsyncAwait = async () => {
 
     setTimeout(async () => {
-      const peticion = await fetch('https://reqres.in/api/users666?page=1');
-      const { data } = await peticion.json();
-      console.log(data);
-      setUsuarios(data);
-      setCargando(false);
+      try {
+        const peticion = await fetch('https://reqres.in/api/users?page=1');
+        const { data } = await peticion.json();
+        console.log(data);
+        setUsuarios(data);
+        setCargando(false);
+      }
+      catch (error) {
+        console.log("Error:", error.message);
+        setErrores(error.message);
+      }
+
     }, 2000);
 
 
@@ -50,32 +59,42 @@ export const AjaxComponent = () => {
     getUsuariosAjaxAsyncAwait();
   }, [])
 
-
-
-  if (cargando) {
+  if (errores !== "") {
+    //Cuando hay algún error
+    return (
+      <div className='error'>
+        <br></br><br></br>
+        Hay errores: {errores}
+      </div>
+    );
+  }
+  else if (cargando) {
     //Cuando todo esta cargando
     return (
       <div className='cargando'>
+        <br></br><br></br>
         Cargando datos...
       </div>
     )
   }
+  else if (!cargando && errores === "")
+    //Cuando todo ha ido bien
+    return (
 
-  //Cuando todo ha ido bien
-  return (
-    <div>
-      <h2>Listado usuarios ajax</h2>
-      <ol className='usuarios'>
-        {
-          usuarios.map(usuario => {
-            return <li key={usuario.id}>
-              <img src={usuario.avatar} width="20" alt="avatar"/>
-              &nbsp;
-              {usuario.first_name} {usuario.last_name}
-            </li>
-          })
-        }
-      </ol>
-    </div>
-  )
+      <div>
+        <br></br><br></br>
+        <h2>Listado usuarios ajax</h2>
+        <ol className='usuarios'>
+          {
+            usuarios.map(usuario => {
+              return <li key={usuario.id}>
+                <img src={usuario.avatar} width="20" alt="avatar" />
+                &nbsp;
+                {usuario.first_name} {usuario.last_name}
+              </li>
+            })
+          }
+        </ol>
+      </div>
+    )
 }
