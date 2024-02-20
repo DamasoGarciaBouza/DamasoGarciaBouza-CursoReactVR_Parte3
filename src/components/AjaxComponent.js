@@ -4,36 +4,44 @@ export const AjaxComponent = () => {
 
   const [usuarios, setUsuarios] = useState([]);
 
-  //GENERICO
-/*   const getUsuariosEstaticos = () => {
-    setUsuarios([
-      {
-        'id': 1,
-        'email': "miguel.lacambra@mail.com",
-        'first_name': "Miguel",
-        'last_name': "Lacambra",
-        'avatar': "https://reqres.in/img/faces/7-image.jpg",
-      }
-    ])
-  } */
+  const [cargando, setCargando] = useState(true);
 
-/*   const getUsuariosAjaxPms = () => {
-    fetch("https://reqres.in/api/users?page=1")
-      .then(respuesta => respuesta.json())
-      .then(
-        resultado_final => {
-          setUsuarios(resultado_final.data);
-        },
-        error => {
-          console.log(error);
-        })
-  } */
+  //GENERICO
+  /*   const getUsuariosEstaticos = () => {
+      setUsuarios([
+        {
+          'id': 1,
+          'email': "miguel.lacambra@mail.com",
+          'first_name': "Miguel",
+          'last_name': "Lacambra",
+          'avatar': "https://reqres.in/img/faces/7-image.jpg",
+        }
+      ])
+    } */
+
+  /*   const getUsuariosAjaxPms = () => {
+      fetch("https://reqres.in/api/users?page=1")
+        .then(respuesta => respuesta.json())
+        .then(
+          resultado_final => {
+            setUsuarios(resultado_final.data);
+          },
+          error => {
+            console.log(error);
+          })
+    } */
 
   const getUsuariosAjaxAsyncAwait = async () => {
-    const peticion = await fetch('https://reqres.in/api/users?page=1');
-    const {data} = await peticion.json();
-    console.log(data);
-    setUsuarios(data);
+
+    setTimeout(async () => {
+      const peticion = await fetch('https://reqres.in/api/users666?page=1');
+      const { data } = await peticion.json();
+      console.log(data);
+      setUsuarios(data);
+      setCargando(false);
+    }, 2000);
+
+
   }
 
   useEffect(() => {
@@ -42,13 +50,29 @@ export const AjaxComponent = () => {
     getUsuariosAjaxAsyncAwait();
   }, [])
 
+
+
+  if (cargando) {
+    //Cuando todo esta cargando
+    return (
+      <div className='cargando'>
+        Cargando datos...
+      </div>
+    )
+  }
+
+  //Cuando todo ha ido bien
   return (
     <div>
       <h2>Listado usuarios ajax</h2>
       <ol className='usuarios'>
         {
           usuarios.map(usuario => {
-            return <li key={usuario.id}>{usuario.first_name} {usuario.last_name}</li>
+            return <li key={usuario.id}>
+              <img src={usuario.avatar} width="20" alt="avatar"/>
+              &nbsp;
+              {usuario.first_name} {usuario.last_name}
+            </li>
           })
         }
       </ol>
